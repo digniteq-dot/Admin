@@ -18,6 +18,9 @@ const Login = () => {
         try {
             const res = await api.post('/auth/login', { username, password });
             localStorage.setItem('digniteq_admin_token', res.data.token);
+            if (res.data.refreshToken) {
+                localStorage.setItem('digniteq_admin_refresh_token', res.data.refreshToken);
+            }
             navigate('/');
         } catch (err) {
             setError(err.response?.data?.message || 'Login failed');
