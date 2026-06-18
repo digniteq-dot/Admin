@@ -1,0 +1,244 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+@layer base {
+  body {
+    @apply bg-[#030610] text-white antialiased;
+  }
+  
+  * {
+    @apply selection:bg-blue-500/30 selection:text-white;
+  }
+}
+
+/* Custom Scrollbar for Admin */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(59, 130, 246, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(59, 130, 246, 0.5);
+}
+
+/* ─── Glass Card ────────────────────────────────────────── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.035);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ─── Input Fields ──────────────────────────────────────── */
+.input-field {
+  @apply w-full bg-[#0A0618]/80 border border-white/[0.08] rounded-xl px-4 py-3 text-white text-sm placeholder-white/25 transition-all duration-300;
+  outline: none;
+  box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+}
+
+.input-field:focus {
+  @apply border-blue-500/40;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08), 0 0 20px rgba(59, 130, 246, 0.05);
+  background: rgba(10, 6, 24, 0.95);
+}
+
+.input-field:hover:not(:focus) {
+  @apply border-white/15;
+}
+
+/* ─── Buttons ───────────────────────────────────────────── */
+.btn-primary {
+  @apply bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2), 0 0 0 0 rgba(59, 130, 246, 0);
+}
+
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 0 6px 25px rgba(59, 130, 246, 0.35), 0 0 0 0 rgba(59, 130, 246, 0);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.btn-secondary {
+  @apply bg-white/[0.04] hover:bg-white/[0.08] text-white/80 hover:text-white border border-white/[0.08] hover:border-white/15 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 active:scale-[0.97];
+}
+
+.btn-danger {
+  @apply bg-red-500/[0.08] hover:bg-red-500/15 text-red-400 border border-red-500/15 hover:border-red-500/30 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 active:scale-[0.97];
+}
+
+/* ─── Page Header ───────────────────────────────────────── */
+.page-header {
+  @apply mb-8;
+}
+
+.page-header h2 {
+  @apply text-2xl md:text-3xl font-sans font-black uppercase tracking-tight mb-1.5;
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.page-header p {
+  @apply text-white/40 text-sm;
+}
+
+/* ─── Status Message ────────────────────────────────────── */
+.status-message {
+  @apply p-4 rounded-xl mb-6 text-sm font-medium;
+  animation: slideDown 0.3s ease-out;
+}
+
+.status-message.success {
+  @apply bg-emerald-500/[0.08] text-emerald-400 border border-emerald-500/15;
+}
+
+.status-message.error {
+  @apply bg-red-500/[0.08] text-red-400 border border-red-500/15;
+}
+
+/* ─── Skeleton Loading ──────────────────────────────────── */
+.skeleton {
+  @apply rounded-xl;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.03) 25%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.03) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+/* ─── Animations ────────────────────────────────────────── */
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+/* ─── Staggered Children ────────────────────────────────── */
+.stagger-children > * {
+  opacity: 0;
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.4s; }
+.stagger-children > *:nth-child(9) { animation-delay: 0.45s; }
+
+/* ─── Mobile Responsiveness Helpers ─────────────────────── */
+@media (max-width: 640px) {
+  .page-header h2 {
+    @apply text-xl;
+  }
+  
+  .btn-primary,
+  .btn-secondary,
+  .btn-danger {
+    @apply px-4 py-2.5 text-xs;
+  }
+}
+
+/* ─── Tooltip ───────────────────────────────────────────── */
+.tooltip {
+  @apply relative;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-1.5 text-xs font-medium text-white bg-[#1a1530] border border-white/10 rounded-lg whitespace-nowrap opacity-0 pointer-events-none;
+  transition: opacity 0.2s, transform 0.2s;
+  transform: translateX(-50%) translateY(4px);
+}
+
+.tooltip:hover::after {
+  @apply opacity-100;
+  transform: translateX(-50%) translateY(0);
+}
