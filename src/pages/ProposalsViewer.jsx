@@ -312,53 +312,19 @@ const ProposalsViewer = () => {
 
             {/* Proposal Detail Modal */}
             {selectedProposal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/70 backdrop-blur-sm">
-                    <div className="relative w-full max-w-4xl bg-[#060212] border border-white/10 rounded-[30px] shadow-2xl overflow-y-auto max-h-[90vh] p-8 md:p-12">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+                    <div className="relative w-full max-w-[850px] bg-slate-100 rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
                         
-                        {/* Close button */}
-                        <button 
-                            className="absolute top-6 right-6 text-white/40 hover:text-white text-lg font-bold"
-                            onClick={() => setSelectedProposal(null)}
-                        >
-                            ✕
-                        </button>
-
-                        <div className="mb-8 border-b border-white/10 pb-6 flex justify-between items-start">
+                        {/* Header Controls */}
+                        <div className="bg-white border-b border-slate-200 p-4 md:p-6 flex justify-between items-center shrink-0 z-10">
                             <div>
-                                <h3 className="text-2xl font-sans font-black text-white uppercase tracking-tight">Proposal Overview</h3>
-                                <p className="text-white/40 text-xs mt-1">Submitted: {new Date(selectedProposal.createdAt).toLocaleString()}</p>
-                            </div>
-                            <div className="flex gap-3">
-                                <button
-                                    onClick={() => handlePrint(selectedProposal)}
-                                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-black text-xs font-bold hover:scale-105 transition-transform"
-                                >
-                                    <Printer size={14} /> Download / Print PDF
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Proposal Content */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                            <div className="space-y-4">
-                                <div>
-                                    <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest block">Client Name</span>
-                                    <p className="text-white text-base font-bold">{selectedProposal.clientName}</p>
-                                </div>
-                                <div>
-                                    <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest block">Business Name</span>
-                                    <p className="text-white/80 text-sm font-medium">{selectedProposal.businessName}</p>
-                                </div>
-                                <div>
-                                    <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest block">Email & Phone</span>
-                                    <p className="text-blue-400 text-sm">{selectedProposal.email} {selectedProposal.phone && `| ${selectedProposal.phone}`}</p>
-                                </div>
-                                <div>
-                                    <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest block">Proposal Status</span>
+                                <h3 className="text-xl font-black text-slate-900 uppercase tracking-tight">Proposal Document</h3>
+                                <div className="flex items-center gap-2 mt-2">
+                                    <span className="text-slate-500 text-xs font-medium">Status:</span>
                                     <select
                                         value={selectedProposal.status}
                                         onChange={(e) => handleStatusChange(selectedProposal._id, e.target.value)}
-                                        className="bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white mt-1.5 focus:outline-none"
+                                        className="bg-slate-50 border border-slate-200 rounded px-2 py-1 text-xs text-slate-800 font-bold focus:outline-none"
                                     >
                                         <option value="new">New</option>
                                         <option value="contacted">Contacted</option>
@@ -367,49 +333,115 @@ const ProposalsViewer = () => {
                                     </select>
                                 </div>
                             </div>
-                            <div>
-                                <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest block">Requirements Description</span>
-                                <p className="text-white/60 text-sm leading-relaxed mt-1.5 bg-white/[0.02] border border-white/5 p-4 rounded-xl">
-                                    {selectedProposal.description || "No description provided."}
-                                </p>
+                            <div className="flex gap-4 items-center">
+                                <button
+                                    onClick={() => handlePrint(selectedProposal)}
+                                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white text-xs font-bold hover:bg-blue-700 transition-colors"
+                                >
+                                    <Printer size={14} /> Print PDF
+                                </button>
+                                <button 
+                                    className="text-slate-400 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+                                    onClick={() => setSelectedProposal(null)}
+                                >
+                                    ✕
+                                </button>
                             </div>
                         </div>
 
-                        {/* Selected services list */}
-                        <div className="mb-8">
-                            <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest block mb-4">Scope of Work</span>
-                            <div className="space-y-4">
-                                {selectedProposal.selectedServices?.map((service, sIdx) => (
-                                    <div key={sIdx} className="bg-white/[0.01] border border-white/5 p-5 rounded-2xl">
-                                        <div className="flex justify-between items-start mb-2">
-                                            <div>
-                                                <h4 className="text-sm font-bold text-white uppercase">{service.serviceType}</h4>
-                                                <span className="text-xs text-blue-400 font-bold">{service.planName}</span>
+                        {/* Proposal Document Body */}
+                        <div className="overflow-y-auto p-4 md:p-8 font-sans text-slate-800 pb-20">
+                            <div className="max-w-[794px] mx-auto flex flex-col gap-10">
+                                
+                                {/* Page 1 equivalent */}
+                                <div className="bg-white shadow-xl border border-slate-200 relative overflow-hidden min-h-[1123px] flex flex-col">
+                                    <div className="h-4 bg-blue-600 w-full shrink-0"></div>
+                                    <div className="p-10 md:p-14 flex-1">
+                                        <div className="flex flex-col md:flex-row justify-between items-start border-b-2 border-slate-100 pb-10 mb-10 gap-6">
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-14 h-14 bg-blue-600 rounded-xl flex items-center justify-center text-white font-black text-2xl shadow-lg">D</div>
+                                                <div>
+                                                    <h2 className="text-3xl font-black tracking-tight text-slate-900 uppercase">Digniteq</h2>
+                                                    <p className="text-blue-600 font-bold text-sm uppercase tracking-widest mt-0.5">Premium Digital Agency</p>
+                                                    <p className="text-slate-500 text-xs mt-1 font-medium">digniteq.in &nbsp;&bull;&nbsp; contact@digniteq.in</p>
+                                                </div>
                                             </div>
-                                            <span className="text-sm font-black text-white">{service.price}</span>
+                                            <div className="text-left md:text-right bg-slate-50 p-4 rounded-xl border border-slate-100">
+                                                <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest block mb-1">Document Type</span>
+                                                <p className="text-slate-900 font-black text-lg uppercase tracking-tight mb-2">Service Proposal</p>
+                                                <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm md:text-right">
+                                                    <span className="text-slate-500">Ref No:</span>
+                                                    <span className="text-slate-900 font-bold">#PRO-{selectedProposal._id?.slice(-6).toUpperCase()}</span>
+                                                    <span className="text-slate-500">Date:</span>
+                                                    <span className="text-slate-900 font-bold">{new Date(selectedProposal.createdAt).toLocaleDateString()}</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        {service.features && (
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 mt-3 pt-3 border-t border-white/5">
-                                                {service.features.map((feat, fIdx) => (
-                                                    <span key={fIdx} className="text-white/40 text-[10px] uppercase">
-                                                        ✦ {feat}
-                                                    </span>
-                                                ))}
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12 bg-slate-50 p-8 rounded-2xl border border-slate-100">
+                                            <div>
+                                                <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-4 block">Prepared For</span>
+                                                <h3 className="text-2xl font-black text-slate-900 mb-1">{selectedProposal.clientName}</h3>
+                                                <p className="text-slate-600 font-bold text-sm uppercase tracking-wider mb-3">{selectedProposal.businessName}</p>
+                                                <div className="space-y-1">
+                                                    <p className="text-slate-500 text-sm">{selectedProposal.email}</p>
+                                                    {selectedProposal.phone && <p className="text-slate-500 text-sm">{selectedProposal.phone}</p>}
+                                                </div>
                                             </div>
-                                        )}
+                                            <div>
+                                                <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-4 block">Project Outline</span>
+                                                <p className="text-slate-600 text-sm leading-relaxed bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                                                    {selectedProposal.description || "Custom business growth and optimization strategy designed for digital enhancement and lead generation targeting specific market goals."}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-10">
+                                            <section>
+                                                <h3 className="text-xl font-bold text-slate-900 mb-3">Investment details</h3>
+                                                <div className="overflow-x-auto border border-slate-200 rounded-lg">
+                                                    <table className="w-full text-left border-collapse">
+                                                        <thead>
+                                                            <tr className="bg-slate-50 border-b border-slate-200">
+                                                                <th className="p-3 font-bold text-slate-900">#</th>
+                                                                <th className="p-3 font-bold text-slate-900">Service Area</th>
+                                                                <th className="p-3 font-bold text-slate-900 text-right">Pricing</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody className="divide-y divide-slate-100">
+                                                            {selectedProposal.selectedServices?.map((service, idx) => (
+                                                                <tr key={idx}>
+                                                                    <td className="p-3 text-slate-600">{idx + 1}</td>
+                                                                    <td className="p-3">
+                                                                        <div className="font-bold text-slate-800">{service.serviceType}</div>
+                                                                        <div className="text-sm text-blue-600 font-bold">{service.planName}</div>
+                                                                        {service.features && (
+                                                                            <div className="mt-2 grid grid-cols-1 gap-1 text-xs text-slate-500">
+                                                                                {service.features.map((feat, fIdx) => (
+                                                                                    <span key={fIdx}>✦ {feat}</span>
+                                                                                ))}
+                                                                            </div>
+                                                                        )}
+                                                                    </td>
+                                                                    <td className="p-3 font-bold text-right text-slate-800 align-top">{service.price}</td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr className="bg-slate-50 border-t-2 border-slate-300">
+                                                                <td colSpan="2" className="p-4 text-right font-black uppercase tracking-widest text-slate-600 text-xs">Total Investment</td>
+                                                                <td className="p-4 font-black text-slate-900 text-xl text-right">{selectedProposal.totalPrice}</td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                            </section>
+                                        </div>
                                     </div>
-                                ))}
+                                </div>
+
                             </div>
                         </div>
-
-                        <div className="border-t border-white/10 pt-6 flex justify-between items-center">
-                            <span className="text-white/40 text-xs uppercase">Estimated Investment</span>
-                            <div className="bg-blue-600/10 border border-blue-500/20 px-6 py-3 rounded-xl text-right">
-                                <span className="text-xs text-blue-400 font-bold uppercase tracking-wider block">Total</span>
-                                <span className="text-xl font-black text-white">{selectedProposal.totalPrice}</span>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             )}
