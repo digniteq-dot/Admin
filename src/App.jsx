@@ -15,6 +15,7 @@ import ProcessManager from './pages/ProcessManager';
 import PortfolioManager from './pages/PortfolioManager';
 import PricingManager from './pages/PricingManager';
 import ContactsViewer from './pages/ContactsViewer';
+import ProposalsViewer from './pages/ProposalsViewer';
 
 const AdminLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -62,6 +63,7 @@ function App() {
           <Route path="portfolio" element={<PortfolioManager />} />
           <Route path="pricing" element={<PricingManager />} />
           <Route path="contacts" element={<ContactsViewer />} />
+          <Route path="proposals" element={<ProposalsViewer />} />
         </Route>
       </Routes>
     </Router>

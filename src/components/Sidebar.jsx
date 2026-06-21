@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Type, List, BarChart3, Info, LayoutList, Image as ImageIcon, CreditCard, MessageSquare, LogOut, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, Type, List, BarChart3, Info, LayoutList, Image as ImageIcon, CreditCard, MessageSquare, LogOut, ChevronRight, FileText } from 'lucide-react';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
     const location = useLocation();
@@ -14,6 +14,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         { name: 'Portfolio', path: '/portfolio', icon: <ImageIcon size={18} /> },
         { name: 'Pricing Plans', path: '/pricing', icon: <CreditCard size={18} /> },
         { name: 'Contact Submissions', path: '/contacts', icon: <MessageSquare size={18} /> },
+        { name: 'Client Proposals', path: '/proposals', icon: <FileText size={18} /> },
     ];
 
     const handleLogout = () => {
