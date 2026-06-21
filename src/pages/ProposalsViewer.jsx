@@ -12,14 +12,11 @@ const ProposalsViewer = () => {
     const fetchProposals = async () => {
         setLoading(true);
         try {
-            const token = localStorage.getItem('digniteq_admin_token');
-            const res = await axios.get('http://localhost:5000/api/proposal', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const res = await api.get('/proposal');
             setProposals(res.data);
         } catch (err) {
             console.error('Fetch Proposals Error:', err);
-            alert('Failed to fetch from localhost:5000/api/proposal - ' + err.message);
+            alert('Failed to fetch proposals - ' + err.message);
         } finally {
             setLoading(false);
         }
