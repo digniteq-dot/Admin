@@ -1,8 +1,33 @@
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Type, List, BarChart3, Info, LayoutList, Image as ImageIcon, CreditCard, MessageSquare, LogOut, ChevronRight, FileText } from 'lucide-react';
+import api from '../api';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
     const location = useLocation();
+    const [settings, setSettings] = useState({
+        companyName: 'Digniteq',
+        tagline: 'Admin',
+        logoUrl: ''
+    });
+
+    useEffect(() => {
+        const fetchSettings = async () => {
+            try {
+                const res = await api.get('/settings');
+                if (res.data) {
+                    setSettings({
+                        companyName: res.data.companyName || 'Digniteq',
+                        tagline: res.data.tagline || 'Admin',
+                        logoUrl: res.data.logoUrl || ''
+                    });
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchSettings();
+    }, []);
 
     const navItems = [
         { name: 'Dashboard', path: '/', icon: <LayoutDashboard size={18} /> },
@@ -14,7 +39,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         { name: 'Portfolio', path: '/portfolio', icon: <ImageIcon size={18} /> },
         { name: 'Pricing Plans', path: '/pricing', icon: <CreditCard size={18} /> },
         { name: 'Contact Submissions', path: '/contacts', icon: <MessageSquare size={18} /> },
-        { name: 'Client Proposals', path: '/proposals', icon: <FileText size={18} /> },
+        { name: 'Service Requests', path: '/proposals', icon: <FileText size={18} /> },
     ];
 
     const handleLogout = () => {
@@ -27,14 +52,20 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             {/* Logo Area */}
             <div className="p-5 flex items-center justify-between border-b border-white/[0.04]">
                 <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-blue-500/20">
-                        D
-                    </div>
-                    <div>
-                        <span className="font-sans font-bold tracking-wider text-white text-sm uppercase">
-                            Digniteq
+                    {settings.logoUrl ? (
+                        <img src={settings.logoUrl} alt="Logo" className="w-8 h-8 object-contain rounded bg-white/10" />
+                    ) : (
+                        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-black text-sm shadow-lg shadow-blue-500/20">
+                            {settings.companyName.charAt(0).toUpperCase()}
+                        </div>
+                    )}
+                    <div className="flex flex-col">
+                        <span className="font-sans font-bold tracking-wider text-white text-sm uppercase leading-none">
+                            {settings.companyName}
                         </span>
-                        <span className="text-blue-400 font-bold text-sm ml-1">Admin</span>
+                        <span className="text-blue-400 font-bold text-[10px] mt-0.5 max-w-[120px] truncate" title={settings.tagline}>
+                            {settings.tagline}
+                        </span>
                     </div>
                 </div>
                 <button 
