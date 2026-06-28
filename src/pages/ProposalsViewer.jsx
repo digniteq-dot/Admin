@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import api from '../api';
 import DataTable from '../components/DataTable';
 import { Eye, Trash2, X } from 'lucide-react';
+import Modal from '../components/Modal';
 
 const ProposalsViewer = () => {
     const [proposals, setProposals] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedProposal, setSelectedProposal] = useState(null);
+    const [deleteConfirmId, setDeleteConfirmId] = useState(null);
 
     const fetchProposals = async () => {
         setLoading(true);
@@ -25,15 +27,8 @@ const ProposalsViewer = () => {
         fetchProposals();
     }, []);
 
-    const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this proposal submission?')) {
-            try {
-                await api.delete(`/proposal/${id}`);
-                fetchProposals();
-            } catch (err) {
-                console.error(err);
-            }
-        }
+    const handleDelete = (id) => {
+        setDeleteConfirmId(id);
     };
 
     const handleStatusChange = async (id, status) => {
@@ -54,6 +49,7 @@ const ProposalsViewer = () => {
         { header: 'Client', accessor: 'clientName', render: (row) => <span className="font-bold">{row.clientName}</span> },
         { header: 'Business', accessor: 'businessName', render: (row) => <span className="text-white/70">{row.businessName}</span> },
         { header: 'Budget', accessor: 'budget', render: (row) => <span className="text-white font-bold">{row.budget || 'N/A'}</span> },
+        { header: 'Source', accessor: 'leadSource', render: (row) => <span className="text-blue-400 font-semibold text-xs bg-blue-500/10 px-2 py-0.5 rounded border border-blue-500/20">{row.leadSource || 'N/A'}</span> },
         { header: 'Status', accessor: 'status', render: (row) => (
             <select
                 value={row.status}
@@ -69,21 +65,13 @@ const ProposalsViewer = () => {
                 <option value="resolved" className="bg-[#0f172a] text-white">RESOLVED</option>
             </select>
         )},
-        { header: 'Actions', accessor: '_id', render: (row) => (
-            <div className="flex gap-2">
-                <button
-                    onClick={() => setSelectedProposal(row)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-500/20 text-blue-400 text-xs font-bold hover:bg-blue-500/30 transition-all"
-                >
-                    <Eye size={12} /> View
-                </button>
-                <button
-                    onClick={() => handleDelete(row._id)}
-                    className="flex items-center justify-center w-8 h-8 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all"
-                >
-                    <Trash2 size={14} />
-                </button>
-            </div>
+        { header: 'Details', accessor: '_id', render: (row) => (
+            <button
+                onClick={() => setSelectedProposal(row)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-500/20 text-blue-400 text-xs font-bold hover:bg-blue-500/30 transition-all"
+            >
+                <Eye size={12} /> View
+            </button>
         )}
     ];
 
@@ -130,6 +118,10 @@ const ProposalsViewer = () => {
                                 <p className="text-xs font-bold text-white/40 uppercase tracking-wider mb-1">Address</p>
                                 <p className="text-white">{selectedProposal.address || 'N/A'}</p>
                             </div>
+                            <div>
+                                <p className="text-xs font-bold text-white/40 uppercase tracking-wider mb-1">Lead Source</p>
+                                <p className="text-white text-blue-400 font-semibold">{selectedProposal.leadSource || 'N/A'}</p>
+                            </div>
                         </div>
 
                         <div className="mb-8">
@@ -156,6 +148,41 @@ const ProposalsViewer = () => {
                     </div>
                 </div>
             )}
+
+            {/* Custom Delete Confirmation Modal */}
+            <Modal 
+                isOpen={!!deleteConfirmId} 
+                onClose={() => setDeleteConfirmId(null)} 
+                title="Confirm Deletion"
+            >
+                <div className="flex flex-col gap-5">
+                    <p className="text-white/70 text-sm leading-relaxed">
+                        Are you sure you want to delete this proposal submission? This action cannot be undone.
+                    </p>
+                    <div className="flex justify-end gap-3 pt-2">
+                        <button 
+                            onClick={() => setDeleteConfirmId(null)}
+                            className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/75 text-sm font-semibold transition-all"
+                        >
+                            Cancel
+                        </button>
+                        <button 
+                            onClick={async () => {
+                                try {
+                                    await api.delete(`/proposal/${deleteConfirmId}`);
+                                    setDeleteConfirmId(null);
+                                    fetchProposals();
+                                } catch (err) {
+                                    console.error(err);
+                                }
+                            }}
+                            className="px-4 py-2 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm font-semibold shadow-lg shadow-red-500/20 transition-all"
+                        >
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 };
